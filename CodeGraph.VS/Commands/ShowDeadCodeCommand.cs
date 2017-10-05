@@ -7,6 +7,7 @@
 using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using CodeGraph.Interfaces;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -102,6 +103,8 @@ namespace CodeGraph.VS
             {
                 message =$@"Current project: {activeProject.Name}";
             }
+
+            ICallGraph graph = null;
 
             string title = "Dead code";
 
