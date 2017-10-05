@@ -6,11 +6,12 @@
 
 using System;
 using System.ComponentModel.Design;
-using System.Globalization;
+using System.Diagnostics;
 using CodeGraph.Interfaces;
 using Microsoft.CodeAnalysis;
+using Microsoft.VisualStudio.GraphModel;
+using Microsoft.VisualStudio.Progression;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace CodeGraph.VS
 {
@@ -52,7 +53,7 @@ namespace CodeGraph.VS
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
+                var menuItem = new MenuCommand(this.SafeOnShowDeadProject, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
         }
@@ -86,36 +87,42 @@ namespace CodeGraph.VS
             Instance = new ShowDeadCodeCommand(package);
         }
 
-        /// <summary>
-        /// This function is the callback used to execute the command when the menu item is clicked.
-        /// See the constructor to see how the menu item is associated with this function using
-        /// OleMenuCommandService service and MenuCommand class.
-        /// </summary>
-        /// <param name="sender">Event sender.</param>
-        /// <param name="e">Event args.</param>
-        private void MenuItemCallback(object sender, EventArgs e)
+        private void SafeOnShowDeadProject(object sender, EventArgs args)
         {
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
+            CommandUtilities.SafeExecute(this.ServiceProvider,
+                "Show dead code",
+                "Error showing dead code",
+                this.ShowDeadCode);
+        }
+
+        private void ShowDeadCode()
+        {
+            string message = "Error: unable to get current Roslyn project";
 
             Project activeProject = ProjectHelper.TryGetActiveRoslynProject(this.ServiceProvider);
 
             if (activeProject != null)
             {
-                message =$@"Current project: {activeProject.Name}";
+                message = $@"Current project: {activeProject.Name}";
             }
 
             ICallGraph graph = null;
 
-            string title = "Dead code";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            ShowAsGraph(graph);
         }
+
+        private void ShowAsGraph(ICallGraph callGraph)
+        {
+            //Debug.Assert(callGraph != null, "Supplied call graph should not be null");
+            //if (callGraph == null)
+            //{
+            //    return;
+            //}
+
+            Graph graph = CallGraphDgmlBuilder.Create(callGraph);
+            IGraphDocumentWindowPane window = CommandUtilities.CreateNewWindow(this.ServiceProvider, "DeadCode{0}.dgml");
+            window.Graph.Merge(graph);
+        }
+
     }
 }
