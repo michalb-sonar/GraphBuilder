@@ -87,6 +87,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.GraphModel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.Progression.Interfaces" />
+    <Reference Include="Microsoft.VisualStudio.Diagrams.View" />
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
