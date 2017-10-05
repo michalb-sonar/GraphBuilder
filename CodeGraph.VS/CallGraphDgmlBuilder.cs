@@ -1,4 +1,5 @@
 ﻿using CodeGraph.Interfaces;
+using Microsoft.VisualStudio.Diagrams.View;
 using Microsoft.VisualStudio.GraphModel;
 
 namespace CodeGraph.VS
@@ -32,6 +33,16 @@ namespace CodeGraph.VS
         {
             // TODO: schema
             Graph g = new Graph();
+
+            using (UndoableGraphTransactionScope transactionScope = new UndoableGraphTransactionScope("LayoutGraphLeftToRight"))
+            {
+                foreach (GraphGroup gg in g.Groups)
+                {
+                    gg.SetLayoutSettings(GroupLayoutStyle.LeftToRight);
+                }
+                transactionScope.Complete();
+            }
+
             return g;
         }
 

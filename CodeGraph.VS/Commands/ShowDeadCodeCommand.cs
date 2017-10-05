@@ -121,7 +121,7 @@ namespace CodeGraph.VS
 
             Graph graph = CallGraphDgmlBuilder.Create(callGraph);
             IGraphDocumentWindowPane window = CommandUtilities.CreateNewWindow(this.ServiceProvider, "DeadCode{0}.dgml");
-            window.Graph.Merge(graph);
+            window.Graph = graph;
         }
 
     }
