@@ -109,7 +109,7 @@ namespace CodeGraph.VS
 
             GraphBuilder builder = new GraphBuilder();
             
-            ICallGraph graph = builder.Build(activeProject, true);
+            ICallGraph graph = builder.Build(activeProject);
 
             ShowAsGraph(graph);
         }
