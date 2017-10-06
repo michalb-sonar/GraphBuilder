@@ -16,10 +16,20 @@ namespace CodeGraph.Interfaces
 
         public ISymbol Symbol { get; set; }
 
+        public State State { get; set; } = State.Unknown;
+
         public Dictionary<string, string> PropertyBag { get; set; } = new Dictionary<string, string>();
 
         public override int GetHashCode() => Symbol.GetHashCode();
 
         public override bool Equals(object obj) => (obj as Node)?.Symbol == Symbol;
+    }
+
+    public enum State
+    {
+        Unknown,
+        Live,
+        Dead,
+        Zombie
     }
 }
