@@ -94,7 +94,12 @@ namespace CodeGraph.VS.Progression
             string id = method.Symbol.ToDisplayString(Microsoft.CodeAnalysis.SymbolDisplayFormat.FullyQualifiedFormat);
 
             // Create and register
+
+            string label = method.Symbol.ContainingType.Name + ":" + method.Symbol.Name;
+
             GraphNode gn = this.graph.Nodes.CreateNew(id);
+            gn.Label = label;
+
             this.mapper.Register(method, gn);
 
             // TODO: Set properties
