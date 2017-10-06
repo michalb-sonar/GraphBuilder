@@ -101,8 +101,7 @@ namespace CodeGraph.VS.Progression
 
             if (method.Incoming?.Any() == true)
             {
-            
-    gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
+                gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
             }
             else
             {

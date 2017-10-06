@@ -98,13 +98,13 @@ namespace CodeGraph.VS
 
         private void ShowDeadCode()
         {
-            string message = "Error: unable to get current Roslyn project";
-
             Project activeProject = ProjectHelper.TryGetActiveRoslynProject(this.ServiceProvider);
 
-            if (activeProject != null)
+            if (activeProject == null)
             {
-                message = $@"Current project: {activeProject.Name}";
+                string message = "Error: unable to get current Roslyn project";
+
+                CommandUtilities.ShowMessage(this.ServiceProvider, "Show dead code", message);
             }
 
             ICallGraph graph = null;
