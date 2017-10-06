@@ -8,6 +8,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using CodeGraph.Interfaces;
+using CodeGraph.VS.Progression;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.GraphModel;
 using Microsoft.VisualStudio.Progression;
@@ -113,6 +114,7 @@ namespace CodeGraph.VS
 
         private void ShowAsGraph(ICallGraph callGraph)
         {
+            // TODO:
             //Debug.Assert(callGraph != null, "Supplied call graph should not be null");
             //if (callGraph == null)
             //{
