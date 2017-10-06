@@ -70,7 +70,7 @@ namespace CodeGraph.VS.Progression
 
             foreach (Node caller in method.Incoming)
             {
-                GraphNode gnCaller = ProcessNode(method);
+                GraphNode gnCaller = ProcessNode(caller);
                 if (gnCaller != null)
                 {
                     CreateZombieCallLink(gnCaller, gn);
@@ -79,7 +79,7 @@ namespace CodeGraph.VS.Progression
 
             foreach (Node called in method?.Outgoing)
             {
-                GraphNode gnCalled = ProcessNode(method);
+                GraphNode gnCalled = ProcessNode(called);
                 if (gnCalled != null)
                 {
                     CreateZombieCallLink(gn, gnCalled);
@@ -101,11 +101,11 @@ namespace CodeGraph.VS.Progression
 
             if (method.Incoming?.Any() == true)
             {
-                gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
+                gn.AddCategory(DeadCodeSchema.NodeCategories.ZombieMethodCategory);
             }
             else
             {
-                gn.AddCategory(DeadCodeSchema.NodeCategories.ZombieMethodCategory);
+                gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
             }
 
             return gn;
