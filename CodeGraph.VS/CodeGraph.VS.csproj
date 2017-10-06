@@ -55,6 +55,7 @@
     <Compile Include="CodeGraphPackage.cs" />
     <Compile Include="Commands\CommandUtilities.cs" />
     <Compile Include="Progression\DeadCodeSchema.cs" />
+    <Compile Include="Progression\ObjectMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\ShowDeadCodeCommand.cs" />
     <Compile Include="Utilities\ProjectHelper.cs" />
