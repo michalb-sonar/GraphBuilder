@@ -71,7 +71,7 @@ namespace CodeGraph
         {
             var nodesToVisit = new Queue<Node>();
 
-            foreach (var node in graph.Nodes.Where(n => n.Symbol.IsPubliclyAccessible()))
+            foreach (var node in graph.Nodes.Where(n => n.Symbol.IsPubliclyAccessible() || n.State == State.Live))
             {
                 nodesToVisit.Enqueue(node);
             }
