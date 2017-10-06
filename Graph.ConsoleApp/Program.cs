@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.Text;
 using CodeGraph.Interfaces;
+using CodeGraph;
 
 namespace CATool1
 {
@@ -17,9 +18,14 @@ namespace CATool1
     {
         static void Main(string[] args)
         {
-
-
+            var graphBuilder = new GraphBuilder();
+            graphBuilder.Build(@"C:\src\CodeGraph\Graph.ConsoleApp\Graph.ConsoleApp.csproj");
+            //graphBuilder.Build(@"C:\src\CodeGraph\CodeGraph.Interfaces\CodeGraph.Interfaces.csproj");
         }
+
+        private void A() { }
+        private void B() { A(); }
+        private void C() { B(); }
 
 
         private static void Dump(ISymbol called, Solution solution)

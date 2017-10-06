@@ -177,6 +177,10 @@
       <Project>{F4F477D7-6638-42FD-A566-5C2E07B64411}</Project>
       <Name>CodeGraph.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeGraph\CodeGraph.csproj">
+      <Project>{449A5E1C-4004-4396-8D89-FA5541034734}</Project>
+      <Name>CodeGraph</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
