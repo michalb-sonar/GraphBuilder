@@ -6,6 +6,8 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 
@@ -49,6 +51,8 @@ namespace CodeGraph.VS
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
+
+            RegisterAssemblyResolver();
         }
 
         #region Package Members
@@ -64,5 +68,66 @@ namespace CodeGraph.VS
         }
 
         #endregion
+
+        #region HACK - Assembly resolution
+        // VS2015.3: for some reason, the required version of System.Collections.Immutable isn't found, and there
+        // doesn't presumably isn't an appropriate binding redirect for it.
+        // Hacky workaround - resolve it to the first currently loaded version, if there is one.
+
+        // Info: the NuGet package info for Microsoft.CodeAnalysis.Common v1.3.1 and v1.3.2 (http://www.nuget.org/packages/Microsoft.CodeAnalysis.Common/1.3.2)
+        // lists System.Immutable.Collections v1.2.0 as a dependency.
+        // However, Microsoft.CodeAnalysis.dll v1.3.1 (which ships in VS2015.U3) is built against
+        // System.Immutable.Collections v1.1.37, which is what ships in VS and is what the binding
+        // redirects in devenv.exe.config are targeting.
+        // It looks like an error in the NuGet package dependencies.
+
+        private static void RegisterAssemblyResolver()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += HandleAssemblyResolve;
+        }
+
+        private static void UnregisterAssemblyResolver()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= HandleAssemblyResolve;
+        }
+
+        private static System.Reflection.Assembly HandleAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            string assemblyName = args.Name;
+
+            if (assemblyName.StartsWith("System.Collections.Immutable"))
+            {
+                Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.StartsWith("System.Collections.Immutable"));
+
+                if (asm != null)
+                {
+                    UnregisterAssemblyResolver();
+                }
+
+                return asm;
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected override void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    UnregisterAssemblyResolver();
+                }
+                disposedValue = true;
+            }
+        }
+
+        #endregion
+
     }
 }
