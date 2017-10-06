@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.GraphModel;
 
 namespace CodeGraph.VS.Progression
 {
-    internal class CallGraphDgmlBuilder
+    public class CallGraphDgmlBuilder
     {
         public static Graph Create(ICallGraph callGraph)
         {
@@ -101,7 +101,8 @@ namespace CodeGraph.VS.Progression
 
             if (method.Incoming?.Any() == true)
             {
-                gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
+            
+    gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
             }
             else
             {
