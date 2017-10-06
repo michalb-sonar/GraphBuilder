@@ -107,7 +107,9 @@ namespace CodeGraph.VS
                 CommandUtilities.ShowMessage(this.ServiceProvider, "Show dead code", message);
             }
 
-            ICallGraph graph = null;
+            GraphBuilder builder = new GraphBuilder();
+            
+            ICallGraph graph = builder.Build(activeProject);
 
             ShowAsGraph(graph);
         }
