@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.Diagrams.View;
 using Microsoft.VisualStudio.GraphModel;
 
-namespace CodeGraph.VS
+namespace CodeGraph.VS.Progression
 {
     internal class CallGraphDgmlBuilder
     {
@@ -31,9 +31,9 @@ namespace CodeGraph.VS
 
         private Graph CreateGraph()
         {
-            // TODO: schema
-            Graph g = new Graph();
+            Graph g = DeadCodeSchema.CreateGraph();
 
+            // Apply graph schema
             using (UndoableGraphTransactionScope transactionScope = new UndoableGraphTransactionScope("LayoutGraphLeftToRight"))
             {
                 foreach (GraphGroup gg in g.Groups)
@@ -45,6 +45,5 @@ namespace CodeGraph.VS
 
             return g;
         }
-
     }
 }
