@@ -19,12 +19,12 @@ namespace CodeGraph.VS
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class ShowDeadCodeCommand
+    internal sealed class ShowAllCodeCommand
     {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 0x0101;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -41,7 +41,7 @@ namespace CodeGraph.VS
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        private ShowDeadCodeCommand(Package package)
+        private ShowAllCodeCommand(Package package)
         {
             if (package == null)
             {
@@ -54,7 +54,7 @@ namespace CodeGraph.VS
             if (commandService != null)
             {
                 var menuCommandID = new CommandID(CommandSet, CommandId);
-                var menuItem = new MenuCommand(this.SafeOnShowDeadProject, menuCommandID);
+                var menuItem = new MenuCommand(this.SafeOnShowCodeGraph, menuCommandID);
                 commandService.AddCommand(menuItem);
             }
         }
@@ -62,7 +62,7 @@ namespace CodeGraph.VS
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static ShowDeadCodeCommand Instance
+        public static ShowAllCodeCommand Instance
         {
             get;
             private set;
@@ -85,18 +85,18 @@ namespace CodeGraph.VS
         /// <param name="package">Owner package, not null.</param>
         public static void Initialize(Package package)
         {
-            Instance = new ShowDeadCodeCommand(package);
+            Instance = new ShowAllCodeCommand(package);
         }
 
-        private void SafeOnShowDeadProject(object sender, EventArgs args)
+        private void SafeOnShowCodeGraph(object sender, EventArgs args)
         {
             CommandUtilities.SafeExecute(this.ServiceProvider,
-                "Show dead code",
-                "Error showing dead code",
-                this.ShowDeadCode);
+                "Show code graph",
+                "Error showing code graph",
+                this.ShowAllCode);
         }
 
-        private void ShowDeadCode()
+        private void ShowAllCode()
         {
             Project activeProject = ProjectHelper.TryGetActiveRoslynProject(this.ServiceProvider);
 
@@ -104,12 +104,12 @@ namespace CodeGraph.VS
             {
                 string message = "Error: unable to get current Roslyn project";
 
-                CommandUtilities.ShowMessage(this.ServiceProvider, "Show dead code", message);
+                CommandUtilities.ShowMessage(this.ServiceProvider, "Show code graph", message);
             }
 
             GraphBuilder builder = new GraphBuilder();
             
-            ICallGraph graph = builder.Build(activeProject, true);
+            ICallGraph graph = builder.Build(activeProject);
 
             ShowAsGraph(graph);
         }
@@ -124,7 +124,7 @@ namespace CodeGraph.VS
             //}
 
             Graph graph = CallGraphDgmlBuilder.Create(callGraph);
-            IGraphDocumentWindowPane window = CommandUtilities.CreateNewWindow(this.ServiceProvider, "DeadCode{0}.dgml");
+            IGraphDocumentWindowPane window = CommandUtilities.CreateNewWindow(this.ServiceProvider, "CodeGraph{0}.dgml");
             window.Graph = graph;
         }
 

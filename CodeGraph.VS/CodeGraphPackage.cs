@@ -65,6 +65,7 @@ namespace CodeGraph.VS
         {
             base.Initialize();
             CodeGraph.VS.ShowDeadCodeCommand.Initialize(this);
+            CodeGraph.VS.ShowAllCodeCommand.Initialize(this);
         }
 
         #endregion

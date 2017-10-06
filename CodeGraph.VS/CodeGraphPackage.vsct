@@ -61,7 +61,15 @@
         </Strings>
       </Button>-->
 
-      <Button guid="guidCodeGraphPackageCmdSet" id="ShowDeadCodeCommandId" priority="0x0100" type="Button">
+      <Button guid="guidCodeGraphPackageCmdSet" id="ShowCodeGraphCommandId" priority="0x0100" type="Button">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
+        <Icon guid="guidImages" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Show code graph</ButtonText>
+        </Strings>
+      </Button>
+
+      <Button guid="guidCodeGraphPackageCmdSet" id="ShowDeadCodeCommandId" priority="0x0101" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_CTXT_PROJECT_BUILD" />
         <Icon guid="guidImages" id="bmpPic1" />
         <Strings>
@@ -90,6 +98,7 @@
     <GuidSymbol name="guidCodeGraphPackageCmdSet" value="{00be1222-1134-4ee2-b589-a0ad9e099532}">
       <IDSymbol name="MyMenuGroup" value="0x1020" />
       <IDSymbol name="ShowDeadCodeCommandId" value="0x0100" />
+      <IDSymbol name="ShowCodeGraphCommandId" value="0x0101" />
     </GuidSymbol>
 
     <GuidSymbol name="guidImages" value="{9c1351f1-875a-48ba-aa30-db7fef767bc9}" >

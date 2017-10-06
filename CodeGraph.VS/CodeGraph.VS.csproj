@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\ShowAllCodeCommand.cs" />
     <Compile Include="Progression\CallGraphDgmlBuilder.cs" />
     <Compile Include="CodeGraphPackage.cs" />
     <Compile Include="Commands\CommandUtilities.cs" />
