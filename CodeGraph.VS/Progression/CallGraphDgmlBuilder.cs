@@ -98,14 +98,17 @@ namespace CodeGraph.VS.Progression
             this.mapper.Register(method, gn);
 
             // TODO: Set properties
-
-            if (method.Incoming?.Any() == true)
+            
+            switch(method.State)
             {
-                gn.AddCategory(DeadCodeSchema.NodeCategories.ZombieMethodCategory);
-            }
-            else
-            {
-                gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
+                case State.Dead:
+                    gn.AddCategory(DeadCodeSchema.NodeCategories.DeadMethodCategory);
+                    break;
+                case State.Zombie:
+                    gn.AddCategory(DeadCodeSchema.NodeCategories.ZombieMethodCategory);
+                    break;
+                default:
+                    break;
             }
 
             return gn;
