@@ -17,6 +17,7 @@ namespace CodeGraph
 
             return Build(project);
         }
+
         public ICallGraph Build(Project project)
         {
             var symbolToNode = new Dictionary<ISymbol, Node>();
@@ -39,11 +40,20 @@ namespace CodeGraph
                                 .Where(HasDeclaringSyntax)
                                 .ToList();
 
-                foreach (var callerNode in callers
-                    .Select(c => symbolToNode[c]))
+                foreach (var caller in callers)
                 {
-                    thisSymbolNode.Incoming.Add(callerNode);
-                    callerNode.Outgoing.Add(thisSymbolNode);
+                    Node callerNode;
+
+                    if (symbolToNode.TryGetValue(caller, out callerNode))
+                    {
+                        thisSymbolNode.Incoming.Add(callerNode);
+                        callerNode.Outgoing.Add(thisSymbolNode);
+                    }
+                    else
+                    {
+                        // TODO: ?create dummy caller node to represent caller?
+                        thisSymbolNode.State = State.Live;
+                    }
                 }
             }
 
